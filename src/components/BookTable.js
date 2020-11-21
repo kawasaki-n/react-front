@@ -6,7 +6,6 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import { Link } from "react-router-dom";
 
 import FloatingAddIcon from './FloatingAddIcon'
 
@@ -21,12 +20,12 @@ function BookTable() {
     const [ books, setBooks ] = useState([]);
 
     useEffect(() => {
-        fetch("/api/books")
+        fetch(process.env.REACT_APP_BACKEND_URL + "/api/books")
             .then(res => res.json())
             .then((result) => {
                 setBooks(result);
-            }, (error) => {
-                console.error(error);
+            }, (err) => {
+                console.log(err);
             })
     }, []);
 
@@ -47,7 +46,7 @@ function BookTable() {
                             <TableCell>{book.name}</TableCell>
                             <TableCell>{book.auther}</TableCell>
                             <TableCell>
-                                <a href={book.url} target="_blank" rel="noopener">LINK</a>
+                                <a href={book.url} target="_blank" rel="noreferrer">LINK</a>
                             </TableCell>
                         </TableRow>
                     ))}

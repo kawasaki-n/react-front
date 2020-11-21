@@ -2,7 +2,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import { Switch, Route } from 'react-router-dom';
 
-import Inbox from '../components/Inbox'
 import Index from '../components/Index'
 import BookTable from '../components/BookTable'
 import Add from '../components/Add'
