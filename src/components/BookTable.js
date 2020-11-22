@@ -12,7 +12,6 @@ import FloatingAddIcon from './FloatingAddIcon'
 const headerCells = [
     {id: 'name', label: 'Name'},
     {id: 'auther', label: 'Auther'},
-    // {id: 'content', label: 'Content'},
     {id: 'url', label: 'URL'},
 ]
 
