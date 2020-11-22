@@ -11,7 +11,7 @@ import FloatingAddIcon from './FloatingAddIcon'
 
 const headerCells = [
     {id: 'name', label: 'Name'},
-    {id: 'auther', label: 'Auther'},
+    {id: 'author', label: 'Author'},
     {id: 'url', label: 'URL'},
 ]
 
@@ -40,10 +40,10 @@ function BookTable() {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {books.map((book) => (
+                    {books.map((book, i) => (
                         <TableRow key={book.id} id={book.id}>
                             <TableCell>{book.name}</TableCell>
-                            <TableCell>{book.auther}</TableCell>
+                            <TableCell>{book.author}</TableCell>
                             <TableCell>
                                 <a href={book.url} target="_blank" rel="noreferrer">LINK</a>
                             </TableCell>
