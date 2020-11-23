@@ -6,6 +6,9 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import IconButton from '@material-ui/core/IconButton';
+
+import DeleteIcon from '@material-ui/icons/Delete';
 
 import FloatingAddIcon from './FloatingAddIcon'
 
@@ -18,7 +21,7 @@ const headerCells = [
 function BookTable() {
     const [ books, setBooks ] = useState([]);
 
-    useEffect(() => {
+    function fetchBooks() {
         fetch(process.env.REACT_APP_BACKEND_URL + "/api/books")
             .then(res => res.json())
             .then((result) => {
@@ -26,7 +29,18 @@ function BookTable() {
             }, (err) => {
                 console.log(err);
             })
+    }
+
+    useEffect(() => {
+        fetchBooks();
     }, []);
+
+    function deleteBook(id) {
+        fetch(process.env.REACT_APP_BACKEND_URL + "/api/books/"+id, {
+            method: 'DELETE'
+        });
+        fetchBooks();
+    }
 
     return (
         <div>
@@ -46,6 +60,11 @@ function BookTable() {
                             <TableCell>{book.author}</TableCell>
                             <TableCell>
                                 <a href={book.url} target="_blank" rel="noreferrer">LINK</a>
+                            </TableCell>
+                            <TableCell align="right" padding="checkbox">
+                                <IconButton aria-label="delete" onClick={ () => deleteBook(book.id) }>
+                                    <DeleteIcon />
+                                </IconButton>
                             </TableCell>
                         </TableRow>
                     ))}
