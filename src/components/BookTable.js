@@ -16,6 +16,7 @@ const headerCells = [
     {id: 'name', label: 'Name'},
     {id: 'author', label: 'Author'},
     {id: 'url', label: 'URL'},
+    {id: 'deleteIcon', label: ''},
 ]
 
 function BookTable() {
@@ -31,16 +32,16 @@ function BookTable() {
             })
     }
 
-    useEffect(() => {
-        fetchBooks();
-    }, []);
-
     function deleteBook(id) {
         fetch(process.env.REACT_APP_BACKEND_URL + "/api/books/"+id, {
             method: 'DELETE'
         });
         fetchBooks();
     }
+
+    useEffect(() => {
+        fetchBooks();
+    }, []);
 
     return (
         <div>
@@ -59,7 +60,7 @@ function BookTable() {
                             <TableCell>{book.name}</TableCell>
                             <TableCell>{book.author}</TableCell>
                             <TableCell>
-                                <a href={book.url} target="_blank" rel="noreferrer">LINK</a>
+                                <a href={book.url} target="_blank" rel="noreferrer">{book.url}</a>
                             </TableCell>
                             <TableCell align="right" padding="checkbox">
                                 <IconButton aria-label="delete" onClick={ () => deleteBook(book.id) }>

@@ -3,50 +3,56 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
+import SaveIcon from '@material-ui/icons/Save';
+
 const useStyles = makeStyles((theme) => ({
     root: {
         '& .MuiTextField-root': {
             margin: theme.spacing(1),
-            width: '25ch',
         },
     },
+    button: {
+        margin: theme.spacing(2)
+    }
 }));
 
 function Add() {
     const classes = useStyles();
-    const [ name, setName ] = useState([]);
-    const [ author, setAuthor ] = useState([]);
-    const [ url, setUrl ] = useState([]);
+    const [ values, setValues ] = useState({
+        name: '',
+        author: '',
+        url: ''
+    });
+
+    const handleChange = (prop) => (event) => {
+        setValues({ ...values, [prop]: event.target.value });
+    }
 
     function handleSubmit(e) {
         e.preventDefault();
-        console.log("name:", name, "author", author, "url:", url);
+        console.log(values);
         fetch(process.env.REACT_APP_BACKEND_URL + "/api/books", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-                "name": name,
-                "author": author,
-                "url": url
-            })
+            body: JSON.stringify(values)
         });
     }
 
     return (
         <form onSubmit={handleSubmit} className={classes.root} >
             <div>
-                <TextField id="name" label="Name" required onChange={(e) => {setName(e.target.value)}} />
+                <TextField id="name" label="Name" value={values.name} required fullWidth onChange={handleChange('name')} />
             </div>
             <div>
-                <TextField id="author" label="Author" onChange={(e) => {setAuthor(e.target.value)}} />
+                <TextField id="author" label="Author" value={values.author} fullWidth onChange={handleChange('author')}  />
             </div>
             <div>
-                <TextField id="url" label="URL" onChange={(e) => {setUrl(e.target.value)}} />
+                <TextField id="url" label="URL" value={values.url} fullWidth onChange={handleChange('url')}  />
             </div>
             <div>
-                <Button type="submit" variant="contained">Register</Button>
+                <Button type="submit" variant="contained" fullWidth className={classes.button} color="primary" startIcon={<SaveIcon />}>Save</Button>
             </div>
         </form>
     );
