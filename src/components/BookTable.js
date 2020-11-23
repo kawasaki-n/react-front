@@ -35,8 +35,11 @@ function BookTable() {
     function deleteBook(id) {
         fetch(process.env.REACT_APP_BACKEND_URL + "/api/books/"+id, {
             method: 'DELETE'
+        })
+        .then(res => res.json())
+        .then((result) => {
+            fetchBooks();
         });
-        fetchBooks();
     }
 
     useEffect(() => {

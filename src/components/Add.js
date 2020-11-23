@@ -32,15 +32,17 @@ function Add(props) {
 
     function handleSubmit(e) {
         e.preventDefault();
-        console.log(values);
         fetch(process.env.REACT_APP_BACKEND_URL + "/api/books", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(values)
+        })
+        .then(res => res.json())
+        .then((result) => {
+            props.history.push('/books');
         });
-        props.history.push('/books');
     }
 
     return (
