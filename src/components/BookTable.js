@@ -1,16 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
+import {Table, TableContainer, TableHead, TableBody, TableFooter, TableRow, TableCell, TablePagination} from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import IconButton from '@material-ui/core/IconButton';
 
 import DeleteIcon from '@material-ui/icons/Delete';
 
 import FloatingAddIcon from './FloatingAddIcon'
+import TablePaginationActions from './TablePaginationActions'
 
 const headerCells = [
     {id: 'name', label: 'Name'},
@@ -21,6 +17,18 @@ const headerCells = [
 
 function BookTable() {
     const [ books, setBooks ] = useState([]);
+    const [ rowsPerPage, setRowsPerPage ] = React.useState(10);
+    const [ page, setPage ] = React.useState(0);
+    const emptyRows = rowsPerPage - Math.min(rowsPerPage, books.length - page * rowsPerPage);
+
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+    }
+
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(parseInt(event.target.value, 10));
+        setPage(0);
+    }
 
     function fetchBooks() {
         fetch(process.env.REACT_APP_BACKEND_URL + "/api/books")
@@ -58,8 +66,11 @@ function BookTable() {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {books.map((book, i) => (
-                        <TableRow key={book.id} id={book.id}>
+                    {(rowsPerPage > 0
+                        ? books.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                        : books
+                    ).map((book, i) => (
+                        <TableRow key={book.id} id={book.id} hover>
                             <TableCell>{book.name}</TableCell>
                             <TableCell>{book.author}</TableCell>
                             <TableCell>
@@ -72,7 +83,25 @@ function BookTable() {
                             </TableCell>
                         </TableRow>
                     ))}
+                    {emptyRows > 0 && (
+                        <TableRow style={{ height: 53 * emptyRows }}>
+                            <TableCell colSpan={6} />
+                        </TableRow>
+                    )}
                 </TableBody>
+                <TableFooter>
+                    <TableRow>
+                        <TablePagination
+                            rowsPerPageOptions={[10, 25, 50, 100, { label: 'All', value: -1 }]}
+                            count={books.length}
+                            rowsPerPage={rowsPerPage}
+                            page={page}
+                            onChangePage={handleChangePage}
+                            onChangeRowsPerPage={handleChangeRowsPerPage}
+                            ActionsComponent={TablePaginationActions}
+                        />
+                    </TableRow>
+                </TableFooter>
             </Table>
         </TableContainer>
         <FloatingAddIcon />
