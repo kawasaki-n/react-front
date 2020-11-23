@@ -21,7 +21,7 @@ function Header() {
           <AppBar position="fixed" className={classes.appBar}>
             <Toolbar>
               <Typography variant="h6" noWrap>
-                Header
+                Oneline Book Store
               </Typography>
             </Toolbar>
           </AppBar>
