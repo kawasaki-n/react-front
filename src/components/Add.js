@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { withRouter } from 'react-router';
+
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
@@ -16,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-function Add() {
+function Add(props) {
     const classes = useStyles();
     const [ values, setValues ] = useState({
         name: '',
@@ -38,6 +40,7 @@ function Add() {
             },
             body: JSON.stringify(values)
         });
+        props.history.push('/books');
     }
 
     return (
@@ -58,4 +61,4 @@ function Add() {
     );
 }
 
-export default Add;
+export default withRouter(Add);
